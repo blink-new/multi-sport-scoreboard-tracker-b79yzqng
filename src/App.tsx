@@ -11,10 +11,12 @@ import CreateTeamPage from './pages/CreateTeamPage';
 import TeamsPage from './pages/TeamsPage';
 import TeamDetailPage from './pages/TeamDetailPage';
 import PlayerDetailPage from './pages/PlayerDetailPage';
+import { initializeDatabase } from './lib/initDb';
 
 function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [dbReady, setDbReady] = useState(false)
 
   useEffect(() => {
     const unsubscribe = blink.auth.onAuthStateChanged((state) => {
@@ -23,6 +25,12 @@ function App() {
     })
     return unsubscribe
   }, [])
+
+  useEffect(() => {
+    if (!loading && user && !dbReady) {
+      initializeDatabase().finally(() => setDbReady(true))
+    }
+  }, [loading, user, dbReady])
 
   if (loading) {
     return (
@@ -35,7 +43,7 @@ function App() {
     )
   }
 
-  if (!user) {
+  if (!loading && !user) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
@@ -43,6 +51,12 @@ function App() {
           <p className="text-gray-600">Please sign in to continue</p>
         </div>
       </div>
+    )
+  }
+
+  if (!loading && user && !dbReady) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">Initializing database...</div>
     )
   }
 

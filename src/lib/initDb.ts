@@ -10,10 +10,21 @@ export async function initializeDatabase() {
     } catch (error) {
       console.log('Setting up database tables...')
       await blink.sql`
-        CREATE TABLE teams (
+        CREATE TABLE IF NOT EXISTS teams (
           id TEXT PRIMARY KEY,
           name TEXT NOT NULL,
-          color TEXT
+          color TEXT,
+          sport TEXT,
+          user_id TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS players (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          team_id TEXT,
+          user_id TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
       `;
     }
