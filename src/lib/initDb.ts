@@ -7,7 +7,7 @@ export async function initializeDatabase() {
       await blink.db.games.list({ limit: 1 })
       console.log('Database tables already exist')
       return
-    } catch (error) {
+    } catch {
       console.log('Setting up database tables...')
       await blink.sql`CREATE TABLE IF NOT EXISTS teams (
           id TEXT PRIMARY KEY,

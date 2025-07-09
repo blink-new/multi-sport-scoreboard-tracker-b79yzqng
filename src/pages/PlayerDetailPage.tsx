@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { blink } from '../lib/blink';
-import { Player } from '../types';
+import { Player, PlayerStat } from '../types';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 
@@ -9,7 +9,7 @@ export default function PlayerDetailPage() {
   const { playerId } = useParams();
   const navigate = useNavigate();
   const [player, setPlayer] = useState<Player | null>(null);
-  const [stats, setStats] = useState<any[]>([]);
+  const [stats, setStats] = useState<PlayerStat[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
